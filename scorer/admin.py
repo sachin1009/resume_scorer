@@ -1,19 +1,26 @@
-from django.contrib import admin
-from .models import JobRole, Resume, ResumeScore
+# scorer/models.py
 
-@admin.register(JobRole)
-class JobRoleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
-    search_fields = ('name',)
+from django.db import models
 
-@admin.register(Resume)
-class ResumeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'uploaded_at')
-    list_filter = ('uploaded_at',)
-    date_hierarchy = 'uploaded_at'
+class JobRole(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
 
-@admin.register(ResumeScore)
-class ResumeScoreAdmin(admin.ModelAdmin):
-    list_display = ('id', 'job_role', 'experience_years', 'score', 'created_at')
-    list_filter = ('job_role', 'created_at')
-    date_hierarchy = 'created_at'
+    def __str__(self):
+        return self.name
+
+class Resume(models.Model):
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Resume {self.id}"
+
+class ResumeScore(models.Model):
+    job_role = models.ForeignKey(JobRole, on_delete=models.CASCADE)
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
+    experience_years = models.IntegerField()
+    score = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Score {self.score} for Resume {self.resume.id}"
