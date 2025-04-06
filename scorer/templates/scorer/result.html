@@ -1,0 +1,43 @@
+{% extends 'scorer/base.html' %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<section class="result-section">
+    <div class="card">
+        <h2>Resume Analysis Results</h2>
+        
+        <div class="result-meta">
+            <p><strong>Job Role:</strong> {{ score.job_role.name }}</p>
+            <p><strong>Experience Level:</strong> {{ score.experience_years }} years</p>
+            <p><strong>Analyzed on:</strong> {{ score.created_at|date:"F j, Y, g:i a" }}</p>
+        </div>
+        
+        <div class="score-display">
+            <div class="score-circle" data-score="{{ score.score }}">
+                <span class="score-value">{{ score.score }}</span>
+                <span class="score-label">Score</span>
+            </div>
+            
+            <div class="score-gauge">
+                <div class="gauge-fill" style="width: {{ score.score }}%;"></div>
+
+
+            </div>
+        </div>
+        
+        <div class="feedback-section">
+            <h3>Detailed Feedback</h3>
+            <div class="feedback-content">
+                {{ score.feedback|linebreaks }}
+            </div>
+        </div>
+        
+        <div class="actions">
+            <a href="{% url 'scorer:index' %}" class="btn-secondary">
+                <i class="fas fa-arrow-left"></i> Try Another Resume
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
