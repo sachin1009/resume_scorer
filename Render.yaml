@@ -2,8 +2,9 @@ services:
   - type: web
     name: resume-scorer
     env: python
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
+    buildCommand: pip install -r resume_scorer/requirements.txt && python resume_scorer/manage.py collectstatic --noinput && python resume_scorer/manage.py migrate
     startCommand: gunicorn resume_scorer.wsgi:application
+    workingDir: resume_scorer
     envVars:
       - key: SECRET_KEY
         generateValue: true
